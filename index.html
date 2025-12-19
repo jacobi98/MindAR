@@ -11,102 +11,23 @@
       margin: 0;
       overflow: hidden;
     }
-    #instructions {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.7);
-      color: white;
-      padding: 15px 25px;
-      border-radius: 10px;
-      font-family: Arial, sans-serif;
-      z-index: 1000;
-      text-align: center;
-      max-width: 80%;
-    }
-    #instructions h3 {
-      margin: 0 0 10px 0;
-    }
-    #instructions p {
-      margin: 5px 0;
-      font-size: 14px;
-    }
-    .hide {
-      display: none;
-    }
   </style>
 </head>
 <body>
-  <div id="instructions">
-    <h3>📱 AR Image Tracking</h3>
-    <p>Inquadra l'immagine target con la fotocamera</p>
-    <p style="font-size: 12px;">Usa un'immagine con buon contrasto e dettagli</p>
-  </div>
-
   <a-scene
-    mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.2/examples/image-tracking/assets/card-example/card.mind; autoStart: true; uiLoading: yes; uiError: yes; uiScanning: yes;"
+    mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;"
     color-space="sRGB"
     renderer="colorManagement: true, physicallyCorrectLights"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
-    
-    <a-assets>
-      <a-asset-item id="model" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.2/examples/image-tracking/assets/card-example/softmind/scene.gltf"></a-asset-item>
-    </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <!-- Target entity - l'oggetto 3D apparirà quando viene rilevata l'immagine -->
     <a-entity mindar-image-target="targetIndex: 0">
-      <!-- Oggetto 3D GLTF -->
-      <a-gltf-model
-        rotation="0 0 0"
-        position="0 0 0"
-        scale="0.5 0.5 0.5"
-        src="#model"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
-      </a-gltf-model>
-      
-      <!-- Alternativa: Box colorato per test (commentato) -->
-      <!--
-      <a-box
-        position="0 0.5 0"
-        scale="1 1 1"
-        color="#FF6B6B"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000">
-      </a-box>
-      -->
-      
-      <!-- Testo 3D -->
-      <a-text
-        value="AR Object"
-        position="0 1.2 0"
-        scale="2 2 2"
-        color="#FFFFFF"
-        align="center">
-      </a-text>
+      <a-box position="0 0 0" scale="1 1 1" color="#FF0000"></a-box>
     </a-entity>
 
-    <!-- Illuminazione per rendere visibile il modello 3D -->
-    <a-light type="ambient" color="#BBB"></a-light>
-    <a-light type="directional" color="#FFF" intensity="0.6" position="-0.5 1 1"></a-light>
+    <a-light type="ambient" color="#FFF"></a-light>
   </a-scene>
-
-  <script>
-    // Nascondi le istruzioni dopo 5 secondi
-    setTimeout(() => {
-      const instructions = document.getElementById('instructions');
-      instructions.classList.add('hide');
-    }, 5000);
-
-    // Event listeners per tracking
-    const sceneEl = document.querySelector('a-scene');
-    const arSystem = sceneEl.systems["mindar-image-system"];
-    
-    sceneEl.addEventListener('renderstart', () => {
-      console.log('AR inizializzato');
-    });
-  </script>
 </body>
 </html>
