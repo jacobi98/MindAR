@@ -77,6 +77,25 @@
     sceneEl.addEventListener('loaded', function () {
       loadingEl.textContent = 'Tocca per iniziare';
       
+      // Adatta le proporzioni dell'immagine al caricamento
+      const img = document.getElementById('myImage');
+      const plane = document.querySelector('a-plane');
+      
+      img.onload = function() {
+        const aspectRatio = img.naturalWidth / img.naturalHeight;
+        
+        // Mantieni le proporzioni dell'immagine
+        if (aspectRatio > 1) {
+          // Immagine orizzontale
+          plane.setAttribute('width', '1');
+          plane.setAttribute('height', 1 / aspectRatio);
+        } else {
+          // Immagine verticale o quadrata
+          plane.setAttribute('height', '1');
+          plane.setAttribute('width', aspectRatio);
+        }
+      };
+      
       // Avvia AR al click/touch
       loadingEl.addEventListener('click', async function() {
         loadingEl.style.display = 'none';
