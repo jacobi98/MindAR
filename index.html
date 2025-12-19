@@ -1,47 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>MindAR Image Tracking</title>
-
-    <!-- A-Frame -->
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-
-    <!-- MindAR -->
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-      }
-    </style>
-  </head>
-
-  <body>
-    <a-scene
-      mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: true"
-      embedded
-    >
-
-      <!-- Camera -->
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-      <!-- Target -->
-      <a-entity mindar-image-target="targetIndex: 0">
-
-        <!-- Oggetto 3D -->
-        <a-box
-          position="0 0 0"
-          rotation="0 45 0"
-          scale="0.5 0.5 0.5"
-          color="#00ffcc"
-        ></a-box>
-
-      </a-entity>
-
-    </a-scene>
-  </body>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindAR - Image Tracking</title>
+  
+  <!-- Importa MindAR e A-Frame -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.4.2/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+  
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    
+    /* Messaggio di caricamento */
+    #loading {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      font-family: Arial, sans-serif;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Messaggio di caricamento -->
+  <div id="loading">Caricamento AR...</div>
+  
+  <!-- Scena A-Frame con MindAR -->
+  <a-scene 
+    mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.2/examples/image-tracking/assets/card-example/card.mind; autoStart: false;"
+    color-space="sRGB"
+    renderer="colorManagement: true, physicallyCorrectLights"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false">
+    
+    <!-- Asset per precaricare -->
+    <a-assets>
+      <img id="card" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.2/examples/image-tracking/assets/card-example/card.png" />
+    </a-assets>
+    
+    <!-- Camera AR -->
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    
+    <!-- Target: quando l'immagine viene riconosciuta, il cubo appare -->
+    <a-entity mindar-image-target="targetIndex: 0">
+      <!-- Cubo rosso 3D -->
+      <a-box 
+        position="0 0 0" 
+        rotation="0 45 0"
+        color="#FF0000" 
+        width="0.5" 
+        height="0.5" 
+        depth="0.5"
+        animation="property: rotation; to: 0 405 0; loop: true; dur: 4000; easing: linear">
+      </a-box>
+    </a-entity>
+    
+  </a-scene>
+  
+  <script>
+    // Gestione avvio AR
+    const sceneEl = document.querySelector('a-scene');
+    const loadingEl = document.getElementById('loading');
+    
+    // Quando MindAR è pronto
+    sceneEl.addEventListener('loaded', function () {
+      loadingEl.textContent = 'Tocca per iniziare';
+      
+      // Avvia AR al click/touch
+      loadingEl.addEventListener('click', async function() {
+        loadingEl.style.display = 'none';
+        
+        // Avvia il sistema AR
+        const arSystem = sceneEl.systems["mindar-image-system"];
+        await arSystem.start();
+      });
+    });
+  </script>
+  
+</body>
 </html>
