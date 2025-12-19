@@ -45,24 +45,25 @@
     
     <!-- Asset per precaricare -->
     <a-assets>
-      <img id="card" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.2/examples/image-tracking/assets/card-example/card.png" />
+      <!-- Inserisci qui l'URL della tua immagine -->
+      <img id="myImage" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.2/examples/image-tracking/assets/card-example/card.png" />
     </a-assets>
     
     <!-- Camera AR -->
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
     
-    <!-- Target: quando l'immagine viene riconosciuta, il cubo appare -->
+    <!-- Target: quando l'immagine viene riconosciuta, appare l'immagine 2D -->
     <a-entity mindar-image-target="targetIndex: 0">
-      <!-- Cubo rosso 3D -->
-      <a-box 
+      <!-- Immagine 2D come piano -->
+      <a-plane 
+        src="#myImage" 
         position="0 0 0" 
-        rotation="0 45 0"
-        color="#FF0000" 
-        width="0.5" 
-        height="0.5" 
-        depth="0.5"
-        animation="property: rotation; to: 0 405 0; loop: true; dur: 4000; easing: linear">
-      </a-box>
+        height="0.552" 
+        width="1"
+        rotation="0 0 0"
+        opacity="1"
+        material="transparent: true">
+      </a-plane>
     </a-entity>
     
   </a-scene>
