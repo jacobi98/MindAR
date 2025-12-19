@@ -54,15 +54,15 @@
     
     <!-- Target: quando l'immagine viene riconosciuta, appare l'immagine 2D -->
     <a-entity mindar-image-target="targetIndex: 0">
-      <!-- Immagine 2D come piano -->
+      <!-- Immagine 2D che copre tutta la superficie del target -->
       <a-plane 
         src="#myImage" 
         position="0 0 0" 
-        height="0.552" 
+        height="1" 
         width="1"
         rotation="0 0 0"
         opacity="1"
-        material="transparent: true">
+        material="transparent: true; shader: flat">
       </a-plane>
     </a-entity>
     
