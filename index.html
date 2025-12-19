@@ -1,114 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MindAR - Image Tracking</title>
-  
-  <!-- Importa MindAR e A-Frame -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MindAR - 3D Animated Model</title>
+
+  <!-- A-Frame -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.4.2/aframe.min.js"></script>
+
+  <!-- MindAR -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
-  
+
   <style>
     body {
       margin: 0;
       overflow: hidden;
     }
-    
-    /* Messaggio di caricamento */
+
     #loading {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.8);
+      background: rgba(0, 0, 0, 0.85);
       color: white;
-      padding: 20px;
+      padding: 20px 30px;
       border-radius: 10px;
       font-family: Arial, sans-serif;
       z-index: 1000;
+      cursor: pointer;
     }
   </style>
 </head>
+
 <body>
-  
-  <!-- Messaggio di caricamento -->
+
   <div id="loading">Caricamento AR...</div>
-  
-  <!-- Scena A-Frame con MindAR -->
-  <a-scene 
+
+  <a-scene
     mindar-image="imageTargetSrc: targets.mind; autoStart: false;"
+    renderer="colorManagement: true; physicallyCorrectLights"
     color-space="sRGB"
-    renderer="colorManagement: true, physicallyCorrectLights"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
-    
-    <!-- Asset per precaricare -->
+
+    <!-- ASSETS -->
     <a-assets>
-      <!-- Inserisci qui l'URL della tua immagine -->
-      <img id="myImage" src=img1.png />
+      <a-asset-item id="model3d" src="topo.glb"></a-asset-item>
     </a-assets>
-    
-    <!-- Camera AR -->
+
+    <!-- CAMERA -->
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-    
-    <!-- Target: quando l'immagine viene riconosciuta, appare l'immagine 2D -->
+
+    <!-- TARGET -->
     <a-entity mindar-image-target="targetIndex: 0">
-      <!-- Immagine 2D che copre tutta la superficie del target -->
-      <a-plane 
-        src="#myImage" 
-        position="0 0 0" 
-        height="1" 
-        width="1"
+
+      <!-- LUCI -->
+      <a-light type="ambient" intensity="0.7"></a-light>
+      <a-light type="directional" position="0 1 1" intensity="0.8"></a-light>
+
+      <!-- MODELLO 3D -->
+      <a-entity
+        gltf-model="#model3d"
+        position="0 0 0"
         rotation="0 0 0"
-        opacity="1"
-        >
-      </a-plane>
+        scale="0.4 0.4 0.4"
+        animation-mixer="loop: repeat">
+      </a-entity>
+
     </a-entity>
-    
+
   </a-scene>
-  
+
   <script>
-    // Gestione avvio AR
-    const sceneEl = document.querySelector('a-scene');
-    const loadingEl = document.getElementById('loading');
-    
-    // Quando MindAR è pronto
-    sceneEl.addEventListener('loaded', function () {
-      loadingEl.textContent = 'Tocca per iniziare';
-      
-      // Adatta le proporzioni dell'immagine al caricamento
-      const img = document.getElementById('myImage');
-      const plane = document.querySelector('a-plane');
-      
-      img.onload = function() {
-        const aspectRatio = img.naturalWidth / img.naturalHeight;
-        
-        // Mantieni sempre le proporzioni reali dell'immagine
-        // Scala in base al lato più lungo = 1
-        if (aspectRatio > 1) {
-          // Immagine orizzontale (es. 16:9)
-          plane.setAttribute('width', '1');
-          plane.setAttribute('height', 1 / aspectRatio);
-        } else {
-          // Immagine verticale (es. 9:16) o quadrata
-          plane.setAttribute('width', aspectRatio);
-          plane.setAttribute('height', '1');
-        }
-        
-        console.log('Aspect Ratio:', aspectRatio, 'Width:', plane.getAttribute('width'), 'Height:', plane.getAttribute('height'));
-      };
-      
-      // Avvia AR al click/touch
-      loadingEl.addEventListener('click', async function() {
-        loadingEl.style.display = 'none';
-        
-        // Avvia il sistema AR
+    const sceneEl = document.querySelector("a-scene");
+    const loadingEl = document.getElementById("loading");
+
+    sceneEl.addEventListener("loaded", () => {
+      loadingEl.textContent = "Tocca per iniziare";
+
+      loadingEl.addEventListener("click", async () => {
+        loadingEl.style.display = "none";
         const arSystem = sceneEl.systems["mindar-image-system"];
         await arSystem.start();
       });
     });
   </script>
-  
+
 </body>
 </html>
