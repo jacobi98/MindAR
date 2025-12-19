@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MindAR - 3D Animated Model</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindAR – 3D Tracking</title>
 
   <!-- A-Frame -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.4.2/aframe.min.js"></script>
@@ -12,80 +12,73 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-    }
-
+    body { margin: 0; overflow: hidden; }
     #loading {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(0,0,0,0.8);
       color: white;
-      padding: 20px 30px;
+      padding: 20px;
       border-radius: 10px;
-      font-family: Arial, sans-serif;
-      z-index: 1000;
-      cursor: pointer;
+      z-index: 10;
+      font-family: Arial;
     }
   </style>
 </head>
 
 <body>
 
-  <div id="loading">Caricamento AR...</div>
+<div id="loading">Tocca per iniziare</div>
 
-  <a-scene
-    mindar-image="imageTargetSrc: targets.mind; autoStart: false;"
-    renderer="colorManagement: true; physicallyCorrectLights"
-    color-space="sRGB"
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false">
+<a-scene
+  mindar-image="imageTargetSrc: targets.mind;"
+  vr-mode-ui="enabled: false"
+  device-orientation-permission-ui="enabled: false"
+  renderer="colorManagement: true">
 
-    <!-- ASSETS -->
-    <a-assets>
-      <a-asset-item id="model3d" src="topo.glb"></a-asset-item>
-    </a-assets>
+  <!-- ASSETS -->
+  <a-assets>
+    <a-asset-item id="model" src="model.glb"></a-asset-item>
+  </a-assets>
 
-    <!-- CAMERA -->
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+  <!-- CAMERA -->
+  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <!-- TARGET -->
-    <a-entity mindar-image-target="targetIndex: 0">
+  <!-- TARGET -->
+  <a-entity mindar-image-target="targetIndex: 0">
 
-      <!-- LUCI -->
-      <a-light type="ambient" intensity="0.7"></a-light>
-      <a-light type="directional" position="0 1 1" intensity="0.8"></a-light>
+    <!-- DEBUG (lascia per ora) -->
+    <a-plane
+      width="1"
+      height="1"
+      color="green"
+      opacity="0.3">
+    </a-plane>
 
-      <!-- MODELLO 3D -->
-      <a-entity
-        gltf-model="#model3d"
-        position="0 0 0"
-        rotation="0 0 0"
-        scale="0.4 0.4 0.4"
-        animation-mixer="loop: repeat">
-      </a-entity>
+    <!-- LUCI -->
+    <a-light type="ambient" intensity="1"></a-light>
 
+    <!-- MODELLO 3D ANIMATO -->
+    <a-entity
+      gltf-model="#model"
+      position="0 0 0.01"
+      rotation="0 0 0"
+      scale="0.1 0.1 0.1"
+      animation-mixer>
     </a-entity>
 
-  </a-scene>
+  </a-entity>
 
-  <script>
-    const sceneEl = document.querySelector("a-scene");
-    const loadingEl = document.getElementById("loading");
+</a-scene>
 
-    sceneEl.addEventListener("loaded", () => {
-      loadingEl.textContent = "Tocca per iniziare";
-
-      loadingEl.addEventListener("click", async () => {
-        loadingEl.style.display = "none";
-        const arSystem = sceneEl.systems["mindar-image-system"];
-        await arSystem.start();
-      });
-    });
-  </script>
+<script>
+  const loading = document.getElementById("loading");
+  loading.addEventListener("click", () => {
+    loading.style.display = "none";
+  });
+</script>
 
 </body>
 </html>
