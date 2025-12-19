@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>MindAR Android Fix</title>
+  <title>MindAR Cross Platform</title>
 
-  <!-- META ANDROID -->
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no" />
-  <meta name="screen-orientation" content="portrait" />
-  <meta name="orientation" content="portrait" />
+  <!-- VIEWPORT (fondamentale per iOS) -->
+  <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   <!-- A-FRAME -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -15,7 +14,7 @@
   <!-- MINDAR -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-  <!-- CSS FIX ANDROID -->
+  <!-- CSS STABILE ANDROID + iOS -->
   <style>
     html, body {
       margin: 0;
@@ -24,62 +23,51 @@
       height: 100%;
       overflow: hidden;
       background: black;
-      touch-action: none;
     }
 
     a-scene {
-      width: 100vw !important;
-      height: 100vh !important;
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
+    }
+
+    video {
+      object-fit: cover !important;
     }
 
     canvas {
-      width: 100vw !important;
-      height: 100vh !important;
       display: block;
     }
   </style>
-
-  <!-- ORIENTATION LOCK -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock("portrait").catch(() => {});
-      }
-    });
-  </script>
 </head>
 
 <body>
 
   <a-scene
     embedded
-    mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
+    mindar-image="imageTargetSrc: targets.mind;"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: true"
-    renderer="antialias: true; alpha: true"
+    renderer="antialias: true"
   >
 
-    <!-- CAMERA -->
+    <!-- CAMERA (NON TOCCARE QUESTI PARAMETRI) -->
     <a-camera
       position="0 0 0"
       look-controls="enabled: false"
     ></a-camera>
 
-    <!-- IMAGE TARGET -->
+    <!-- TARGET -->
     <a-entity mindar-image-target="targetIndex: 0">
 
-      <!-- DEBUG AXES (puoi toglierli dopo) -->
-      <a-entity axis-helper="size: 0.4"></a-entity>
+      <!-- DEBUG -->
+      <a-entity axis-helper="size: 0.3"></a-entity>
 
-      <!-- CUBO -->
+      <!-- OGGETTO -->
       <a-box
         position="0 0 0.15"
-        rotation="0 45 0"
         scale="0.4 0.4 0.4"
-        color="#ff0044"
+        rotation="0 45 0"
+        color="#00ffcc"
       ></a-box>
 
     </a-entity>
