@@ -1,47 +1,47 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>MindAR Image Tracking</title>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-    }
-  </style>
-</head>
-<body>
-  <a-scene
-    mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;"
-    color-space="sRGB"
-    renderer="colorManagement: true, physicallyCorrectLights"
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>MindAR Image Tracking</title>
 
-    <a-camera position="0 0 0" look-controls="enabled: false" cursor="rayOrigin: mouse"></a-camera>
+    <!-- A-Frame -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
-    <a-entity mindar-image-target="targetIndex: 0">
-      <a-box position="0 0 0" scale="1 1 1" color="#FF0000"></a-box>
-    </a-entity>
+    <!-- MindAR -->
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-    <a-light type="ambient" color="#FFF"></a-light>
-  </a-scene>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const sceneEl = document.querySelector('a-scene');
-      
-      sceneEl.addEventListener('arReady', () => {
-        console.log('MindAR inizializzato correttamente');
-      });
+  <body>
+    <a-scene
+      mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+      embedded
+    >
 
-      sceneEl.addEventListener('arError', (event) => {
-        console.error('Errore MindAR:', event.detail);
-      });
-    });
-  </script>
-</body>
+      <!-- Camera -->
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <!-- Target -->
+      <a-entity mindar-image-target="targetIndex: 0">
+
+        <!-- Oggetto 3D -->
+        <a-box
+          position="0 0 0"
+          rotation="0 45 0"
+          scale="0.5 0.5 0.5"
+          color="#00ffcc"
+        ></a-box>
+
+      </a-entity>
+
+    </a-scene>
+  </body>
 </html>
