@@ -84,16 +84,19 @@
       img.onload = function() {
         const aspectRatio = img.naturalWidth / img.naturalHeight;
         
-        // Mantieni le proporzioni dell'immagine
+        // Mantieni sempre le proporzioni reali dell'immagine
+        // Scala in base al lato più lungo = 1
         if (aspectRatio > 1) {
-          // Immagine orizzontale
+          // Immagine orizzontale (es. 16:9)
           plane.setAttribute('width', '1');
           plane.setAttribute('height', 1 / aspectRatio);
         } else {
-          // Immagine verticale o quadrata
-          plane.setAttribute('height', '1');
+          // Immagine verticale (es. 9:16) o quadrata
           plane.setAttribute('width', aspectRatio);
+          plane.setAttribute('height', '1');
         }
+        
+        console.log('Aspect Ratio:', aspectRatio, 'Width:', plane.getAttribute('width'), 'Height:', plane.getAttribute('height'));
       };
       
       // Avvia AR al click/touch
